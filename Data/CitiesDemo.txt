@@ -1,0 +1,6 @@
+Boston Massachusetts(MA) 42.24 -71.03
+Montgomery Alabama(AL) 32.36 -86.28
+Juneau Alaska(AK) 58.30 -134.42
+Phoenix Arizona(AZ) 33.45 -112.07
+Little_Rock Arkansas(AR) 34.74 -92.33
+Sacramento California(CA) 38.55 -121.47
