@@ -71,6 +71,7 @@ public class Particle extends Route {
 	private void learnFromSelf(double w) {
 		
 		int numUnchanged = (int) (this.getRoute().size() * w);
+		if (numUnchanged < 1) numUnchanged =1;
 		// System.out.println(numUnchanged);
 		
 		int start = 0;

@@ -12,15 +12,17 @@ import pso.basic.Cities;
  */
 public class PSODriver {
 	
-	Swarm swarm;
+	public Swarm swarm;
 
-	public PSODriver(int num, String fileName, int numParticles, int ePochs) {
+	public PSODriver(int num, String fileName, int numParticles, int ePochs,
+			double w, double c1, double c2) {
 		
 		// load cities
 		Cities cities = new Cities(num, fileName);
 				
 		// create swarm
-		swarm = new Swarm(numParticles, cities, ePochs);
+		// swarm = new Swarm(numParticles, cities, ePochs);
+		swarm = new Swarm(numParticles, cities, ePochs, w, c1, c2);
 		
 	}
 	
@@ -40,7 +42,13 @@ public class PSODriver {
 		// fileName
 		// #Particles
 		// Epochs
-		PSODriver job = new PSODriver(21, "CitiesDemo-20.txt", 10, 10);
+		
+		// 0.1 / 0.3 / 0.4(0.3)
+		/*PSODriver job = new PSODriver(10, "CitiesDemo-10.txt", 50, 100,
+				0.1, 0.3, 0.3);*/
+		
+		PSODriver job = new PSODriver(50, "Cities.txt", 50, 1000,
+				0.1, 0.3, 0.45);
 		
 		job.run();
 	}

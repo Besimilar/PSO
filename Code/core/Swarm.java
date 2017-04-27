@@ -24,12 +24,34 @@ public class Swarm {
 	double c1 = 0.4; // learning rate c1 for cognition
 	double c2 = 0.4; // learning rate c2 for social
 	
-	Particle gBest;
+	public Particle gBest;
 	Particle[] swarm; 
 	
 	public Swarm(int num, Cities cities, int ePochs) {
 		
 		this.num = num;
+		
+		// generateSwarm
+		generateSwarm(cities);
+		
+		// start to explore
+		// iterate #ePochs times
+		for (int i = 0; i < ePochs; i++)	{
+			System.out.println("#Exploration: " + i + "...");
+			System.out.println();
+			// log.log(Level.INFO,"Exploration: " + i + "...");
+			explore();
+		}
+			
+	}
+	
+	public Swarm(int num, Cities cities, int ePochs,
+			double w, double c1, double c2) {
+		
+		this.num = num;
+		this.w = w;
+		this.c1 = c1;
+		this.c2 = c2;
 		
 		// generateSwarm
 		generateSwarm(cities);
