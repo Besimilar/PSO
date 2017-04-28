@@ -27,7 +27,10 @@ public class Particle extends Route {
 
 	Route pBest;
 	int valBest;
-	double valMax = 1.05; // Vmax
+	double valMax = 1.00; // Vmax
+	
+	// isConverge
+	public static boolean isConverge = false;
 
 	/**
 	 * @param index
@@ -57,7 +60,10 @@ public class Particle extends Route {
 		
 		// save current Route For Converge
 		// if the learning result is bad, restore this route
-		Route savedRoute = new Route(this);
+		Route savedRoute = null;
+		if (isConverge) {
+			savedRoute = new Route(this);
+		}
 		
 		// Self-adjustment
 		learnFromSelf(w);
@@ -68,17 +74,21 @@ public class Particle extends Route {
 		// Learn From gBest
 		learnFromSocial(gBest, c2);
 		
-		// if learning result is good, accept
-		// if learning result is worse, restore
-		if (this.getTotalDistance() < savedRoute.getTotalDistance()*valMax) {
-			// after exploration, update pBest
-			updateBest();
+		if (isConverge) {
+			// if learning result is good, accept
+			// if learning result is worse, restore
+			if (this.getTotalDistance() < savedRoute.getTotalDistance()*valMax) {
+				// after exploration, update pBest
+				updateBest();
+			}
+			else {
+				this.getRoute().clear();
+				this.getRoute().addAll(savedRoute.getRoute());
+				this.calculateRoute();
+			}
 		}
-		else {
-			this.getRoute().clear();
-			this.getRoute().addAll(savedRoute.getRoute());
-			this.calculateRoute();
-		}
+		else updateBest();
+		
 	
 		// for test: is better than only Shuffle? Of course
 		// Collections.shuffle(this.getRoute());

@@ -17,6 +17,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import pso.basic.Cities;
+import pso.core.Particle;
 import pso.core.Swarm;
 
 /**
@@ -35,6 +36,7 @@ public class PSO2D implements ActionListener {
 	JTextField ePochs;
 	JTextField numParticles;
 	JComboBox<Boolean> isParallel;
+	JComboBox<Boolean> isConverge;
 	
 	public PSO2D(int num, String fileName) {
 		
@@ -75,7 +77,7 @@ public class PSO2D implements ActionListener {
 		
 		// input layer
 		JPanel wPanel = new JPanel();
-		w = new JTextField("0.6", 5);
+		w = new JTextField("0.3", 5);
 		JLabel wLabel = new JLabel("w: ");
 		wPanel.add(wLabel); wPanel.add(w);
 				
@@ -84,7 +86,7 @@ public class PSO2D implements ActionListener {
 		JPanel iterPanel = new JPanel();
 		JPanel pPanel = new JPanel();
 		
-		c1 = new JTextField("0.9", 5);
+		c1 = new JTextField("0.85", 5);
 		JLabel c1Label = new JLabel("c1:");
 		c2 = new JTextField("0.05", 5);
 		JLabel c2Label = new JLabel("c2:");
@@ -107,7 +109,15 @@ public class PSO2D implements ActionListener {
 		isParallel.addActionListener(ae -> { Swarm.isParallel = choice[isParallel.getSelectedIndex()]; });
 		parallelPanel.add(parallelLabel); parallelPanel.add(isParallel);
 		
-		input.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 0));
+		// Converge choice
+		JPanel convergePanel = new JPanel();
+		JLabel convergeLabel = new JLabel("isConverge: ");
+		isConverge = new JComboBox<>(choice);
+		isConverge.setSelectedIndex(1);
+		isConverge.addActionListener(ae -> { Particle.isConverge = choice[isConverge.getSelectedIndex()]; });
+		convergePanel.add(convergeLabel); convergePanel.add(isConverge);
+		
+		input.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 0));
 		
 		input.add(wPanel);
 		input.add(c1Panel);
@@ -115,6 +125,7 @@ public class PSO2D implements ActionListener {
 		input.add(pPanel);
 		input.add(iterPanel);
 		input.add(parallelPanel);
+		input.add(convergePanel);
 	}
 	
 	@Override

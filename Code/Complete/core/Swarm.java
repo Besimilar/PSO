@@ -27,8 +27,8 @@ public class Swarm {
 	public static double c2 = 0.05; // learning rate c2 for social
 	
 	public Particle gBest;
-	// Particle[] swarm;
-	ArrayList<Particle> swarm; // for parallel
+	
+	public ArrayList<Particle> swarm; // for parallel
 	
 	public static boolean isParallel = true; 
 	

@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import pso.basic.Cities;
 import pso.basic.City;
 import pso.core.PSODriver;
+import pso.core.Particle;
 import pso.core.Swarm;
 import tool.Stopwatch;
 
@@ -103,9 +104,24 @@ public class PSOMain extends JPanel {
 					+ Swarm.isParallel + ")";
 			g.drawString(rTime, size.width*3/4, 30);
 			
-			//System.out.println(Swarm.isParallel);
+			// display Converge
+			int avg = 0;
+			// calculate average distances of a swarm
+			for (Particle p : job.swarm.swarm) {
+				avg += p.getTotalDistance();
+			}
+			avg /= job.swarm.swarm.size();
+			String converge = "isConverge: " + Particle.isConverge
+					+ " (AvgForSwarm: " + avg + ")";
+			g.drawString(converge, size.width*3/4, 45);
+
 			// Display gBest
+			job.swarm.displaySwarm();
+			
+			System.out.println("Final gBest: ");
 			job.swarm.gBest.display();
+			System.out.println("############ Display END ############");
+			System.out.println();
 		}
 		
 	}
