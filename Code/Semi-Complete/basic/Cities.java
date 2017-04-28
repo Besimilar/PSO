@@ -15,22 +15,24 @@ import java.io.InputStreamReader;
  *
  * This Class "Cities" stores all city information into an Array:
  * The index for Array is the city's id in input file.
- * The index0 is for both the start point and end point of the travel (Boston).
  */
 public class Cities {
 
 	public static int num = 50; // 50 states
 	public static String fileName = "Cities.txt";
 	
+	// Array<City> to store indexes - cities
+	// private ArrayList<City> cities = new ArrayList<>(); 
 	private static City[] cities;
-	public static City getCity(int cityIndex) { // return one City
+	
+	public static City getCity(int cityIndex) {
 		return cities[cityIndex]; 
 	}
-	public static City[] getAll () { // return All Cities
+	public static City[] getAll () {
 		return cities;
 	}
 	
-	// Coordinate Ranges are used in Drawing Map
+	// Coordinated are used in Drawing Map
 	int east = Integer.MIN_VALUE;
 	int west = Integer.MAX_VALUE;
 	int north = Integer.MIN_VALUE;
@@ -96,6 +98,7 @@ public class Cities {
 	 */
 	private void updataCoordinates() {
 		// TODO Auto-generated method stub
+		
 		for (City c : cities) {
 			double xLocation = c.getLongitude() - west + 1;
 			double yLocation = north - c.getLatitude() + 1;
@@ -103,7 +106,10 @@ public class Cities {
 			c.setX(xLocation/(east-west + 5));
 			c.setY(yLocation/(north-south + 2));
 		}
+		
+		
 	}
+	
 	
 	// ****** Calculate distances between any two cities(states)
 	// for simplifying calculation: use Longitude & latitude of cities as 
@@ -125,6 +131,10 @@ public class Cities {
 	
 	// display all the cities and their information
 	public void displayCities() {
+		/*for (int i = 0; i<num; i++) {
+			System.out.println(cities[i].index + " - " + cities[i] + ": " + cities[i].longitude
+					+ " " + cities[i].latitude);
+		}*/
 		for (City c: cities) {
 			System.out.println(c.getIndex() + " - " + c + ": " + c.getLongitude()
 					+ " " + c.getLatitude());
@@ -133,7 +143,8 @@ public class Cities {
 	
 	// display Distance Information for one city
 	public void displayDistanceForCity(int cityIndex) {
-		// 0 for Boston
+		
+		// 20 for Boston
 		System.out.println("######: " + getCity(cityIndex).getIndex()
 				+ " " + getCity(cityIndex));
 		
@@ -142,6 +153,7 @@ public class Cities {
 			System.out.println(cities[i].getIndex() + " - "
 					+ cities[i] + ": " + getCity(cityIndex).getDistances().get(i) );
 		}
+		
 	}
 	
 	public int getNum() {
@@ -172,8 +184,7 @@ public class Cities {
 					+ cities.cities[i] + ": " + cities.cities[20].distances[i] );
 		}*/
 		
-		cities.displayDistanceForCity(0);
-		System.out.println();
+		// cities.displayDistanceForCity(0);;
 		// System.out.println(cities.getCity(0).getDistances().size());
 		
 		// test for Coordinates Calculation

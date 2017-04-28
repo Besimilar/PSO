@@ -4,7 +4,6 @@
 package pso.test;
 
 import pso.basic.Cities;
-import pso.core.PSODriver;
 import pso.core.Swarm;
 
 /**

@@ -5,8 +5,6 @@ package pso.core;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
-
 import pso.basic.Cities;
 import pso.basic.City;
 import pso.basic.Route;
@@ -48,6 +46,9 @@ public class Particle extends Route {
 	// particle explore
 	public void explore(Route gBest, double w, double c1, double c2) {
 		
+		// save current Route
+		Route savedRoute = new Route(this);
+		
 		// Self-adjustment
 		learnFromSelf(w);
 		
@@ -57,8 +58,18 @@ public class Particle extends Route {
 		// Learn From gBest
 		learnFromSocial(gBest, c2);
 		
+		if (this.getTotalDistance() <= savedRoute.getTotalDistance()) {
+			// after exploration, update pBest
+			updateBest();
+		}
+		else {
+			this.getRoute().clear();
+			this.getRoute().addAll(savedRoute.getRoute());
+			this.calculateRoute();
+		}
+		
 		// after exploration, update pBest
-		updateBest();
+		// updateBest();
 		
 		// for test: is better than Shuffle? Of course
 		// Collections.shuffle(this.getRoute());
@@ -74,7 +85,8 @@ public class Particle extends Route {
 	private void learnFromSelf(double w) {
 		
 		int numUnchanged = (int) (this.getRoute().size() * w);
-		if (numUnchanged < 1) numUnchanged =1;
+		// if (numUnchanged < 1) numUnchanged =1;
+		if (numUnchanged < 1) return;
 		// System.out.println(numUnchanged);
 		
 		int start = 0;
@@ -114,8 +126,9 @@ public class Particle extends Route {
 		// set range for the piece which will be picked
 		int numPicked = (int) (pBest.getRoute().size() * c1 + 0.5);
 		// System.out.println("numPicked: " + numPicked);
+		// if (numPicked < 1) numPicked = 1;
+		if (numPicked < 1) return;
 		
-		if (numPicked < 1) numPicked = 1;
 		int startIndex = (int)(Math.random()*(pBest.getRoute().size()- numPicked + 1));
 		// int startIndex = 2;
 		// System.out.println("Pick From " + startIndex);
@@ -152,8 +165,9 @@ public class Particle extends Route {
 		// set range for the piece which will be picked
 		int numPicked = (int) (gBest.getRoute().size() * c2 + 0.5);
 		// System.out.println("numPicked: " + numPicked);
-				
-		if (numPicked < 1) numPicked = 1;
+		// if (numPicked < 1) numPicked = 1;
+		if (numPicked < 1) return;
+		
 		int startIndex = (int)(Math.random()*(gBest.getRoute().size()- numPicked + 1));
 		// int startIndex = 2;
 		// System.out.println("Pick From " + startIndex);

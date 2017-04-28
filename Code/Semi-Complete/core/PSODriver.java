@@ -53,18 +53,17 @@ public class PSODriver {
 		// #Particles
 		// Epochs
 		
-		// 0.1 / 0.3 / 0.4(0.3) - best Parameter Combinations
+		// 0.1 / 0.3 / 0.4(0.3)
 		/*PSODriver job = new PSODriver(10, "CitiesDemo-10.txt", 50, 100,
 				0.1, 0.3, 0.3);*/
 		
 		PSODriver job = new PSODriver(48, "Cities-clean.txt", 100, 5000,
-				0.2, 0.95, 0.05);
+				0.1, 0.7, 0.1);
 		// 0.2 - 0,3 - 0.5
 		// 0.5, 0.7, 0.1
 		// 0.5, 0.8, 0.1
 		// 0.2, 0.7, 0.1
 		// 0.2, 0.7, 0.1
-		// above are good Parameter Combinations  
 		
 		job.run();
 	}

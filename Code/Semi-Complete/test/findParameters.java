@@ -20,7 +20,7 @@ public class findParameters {
 		
 		int bestDistance = Integer.MAX_VALUE;
 		double[] params = new double[3];
-		Cities cities = new Cities(48, "Cities-clean.txt");
+		Cities cities = new Cities(50, "Cities.txt");
 		int count = 0;
 		
 		for (int i = 1; i<10; i++) {

@@ -11,15 +11,11 @@ import java.util.Collections;
  * NUID 001677683
  *
  * This class is to generate a Route.
- * 
- * Calculates the total distance of current route: stores in totalDistance.
- * Supports calculating distance between any two cities in a route.
-
  */
 public class Route {
 	
 	protected int id;
-
+	// int seed = 49;
 	protected int num = 50; // 50 states
 	
 	private int startIndex = 0; // start: Boston 
@@ -29,7 +25,8 @@ public class Route {
 	public int getTotalDistance() {
 		return totalDistance;
 	}
-	
+	public void setTotalDistance(int total) { this.totalDistance = total;}
+
 	protected ArrayList<City> route = new ArrayList<>();
 	public ArrayList<City> getRoute() {
 		return route;
@@ -57,11 +54,13 @@ public class Route {
 		this.totalDistance = r.totalDistance;
 		
 		// copy route
+		// for (City c : r.route) this.route.add(c);
+		// ######
 		this.route.addAll(r.getRoute());
 		
 	}
 	
-	// for finding the best Route in pso.test
+	// for test the best Route
 	public Route(Cities cities, ArrayList<Integer> arr) {
 		
 		this.num = cities.getNum();
@@ -84,11 +83,18 @@ public class Route {
 	private void generateRoute(Cities cities) {
 		
 		// a travel route of city index
+		// int[] routeOrder = new int[num];
 		for (int i = 1; i < num; i++) {
+			// routeOrder[i] = i;
 			route.add(Cities.getCity(i));
+			
+			// test for route generation
+			// System.out.println(route.get(i));
 		}
 		
 		// randomly shuffle the order to get a random route 
+		// Random rnd = new Random(seed);
+		// Collections.shuffle(route, rnd);
 		Collections.shuffle(route);
 			
 	}
@@ -154,8 +160,7 @@ public class Route {
 
 	public static void main(String args[]) {
 		
-		Cities cities = new Cities(48, "Cities-clean.txt");
-		System.out.println("Randomly generate a route: ");
+		Cities cities = new Cities(6, "CitiesDemo.txt");
 		Route route = new Route(0, cities);
 		
 		// test index in Route
@@ -166,9 +171,9 @@ public class Route {
 		}*/
 		
 		// display all cities's information
-		/*for (City c: Cities.getAll()) {
+		for (City c: Cities.getAll()) {
 			cities.displayDistanceForCity(c.getIndex());
-		}*/
+		}
 		
 		System.out.println();
 		route.displayRoute();
@@ -177,9 +182,8 @@ public class Route {
 		System.out.println("TotalDistance: " + route.totalDistance);
 		
 		// test Distance between two cities
-		System.out.println();
-		System.out.println("Distance between 2 to 10: ");
-		System.out.println(route.distanceBetween(2,10));
+		System.out.println("Distance between 0 to 4: ");
+		System.out.println(route.distanceBetween(0,4));
 		
 		
 	}

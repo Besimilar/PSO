@@ -51,7 +51,7 @@ public class PSOMain extends JPanel {
 			g.drawOval(x, y, 3, 3);
 		}
 		
-		// for drawing
+		// for test
 		if (started) {
 			
 			//PSODriver job = new PSODriver(48, "Cities-clean.txt", 100, 5000,
@@ -104,8 +104,6 @@ public class PSOMain extends JPanel {
 			g.drawString(rTime, size.width*3/4, 30);
 			
 			//System.out.println(Swarm.isParallel);
-			// Display gBest
-			job.swarm.gBest.display();
 		}
 		
 	}

@@ -40,8 +40,8 @@ public class Cities {
 	
 	// Constructor for Cities: read all data from "cities.txt"
 	public Cities(int num, String fileName) {
-		this.num = num;
-		this.fileName = fileName;
+		Cities.num = num;
+		Cities.fileName = fileName;
 		cities = new City[num];
 		
 		readData();

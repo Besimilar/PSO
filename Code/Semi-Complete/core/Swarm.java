@@ -18,12 +18,12 @@ public class Swarm {
 	// test for log
 	// private static final Logger log = Logger.getLogger(Swarm.class.getName());
 	
-	public static int num = 50; // #Particles
-	public static int ePochs = 500;
+	public static int num = 100; // #Particles
+	public static int ePochs = 5000;
 	
-	public static double w = 0.6; // inertia
-	public static double c1 = 0.4; // learning rate c1 for cognition
-	public static double c2 = 0.4; // learning rate c2 for social
+	public static double w = 0.4; // inertia
+	public static double c1 = 0.9; // learning rate c1 for cognition
+	public static double c2 = 0.05; // learning rate c2 for social
 	
 	public Particle gBest;
 	// Particle[] swarm;
@@ -33,15 +33,15 @@ public class Swarm {
 	
 	public Swarm(int num, Cities cities, int ePochs) {
 		
-		this.num = num;
-		this.ePochs = ePochs;
+		Swarm.num = num;
+		Swarm.ePochs = ePochs;
 		
 		// generateSwarm
 		generateSwarm(cities);
 		
 		// start to explore
 		// iterate #ePochs times
-		for (int i = 0; i < this.ePochs; i++)	{
+		for (int i = 0; i < Swarm.ePochs; i++)	{
 			//System.out.println("#Exploration: " + i + "...");
 			//System.out.println();
 			// log.log(Level.INFO,"Exploration: " + i + "...");
@@ -53,18 +53,18 @@ public class Swarm {
 	public Swarm(int num, Cities cities, int ePochs,
 			double w, double c1, double c2) {
 		
-		this.num = num;
-		this.ePochs = ePochs;
-		this.w = w;
-		this.c1 = c1;
-		this.c2 = c2;
+		Swarm.num = num;
+		Swarm.ePochs = ePochs;
+		Swarm.w = w;
+		Swarm.c1 = c1;
+		Swarm.c2 = c2;
 		
 		// generateSwarm
 		generateSwarm(cities);
 		
 		// start to explore
 		// iterate #ePochs times
-		for (int i = 0; i < this.ePochs; i++)	{
+		for (int i = 0; i < Swarm.ePochs; i++)	{
 			// System.out.println("#Exploration: " + i + "...");
 			// System.out.println();
 			// log.log(Level.INFO,"Exploration: " + i + "...");
@@ -80,7 +80,7 @@ public class Swarm {
 				
 		// start to explore
 		// iterate #ePochs times
-		for (int i = 0; i < this.ePochs; i++) {
+		for (int i = 0; i < Swarm.ePochs; i++) {
 			//System.out.println("#Exploration: " + i + "...");
 			//System.out.println();
 			explore();
@@ -181,7 +181,7 @@ public class Swarm {
 		System.out.println("Time: " + time.elapsedTime());
 		
 		// test for displaying swarm
-		// swarm.displaySwarm();
+		swarm.displaySwarm();
 		
 		// test for displaying gBest
 		swarm.displayBest();

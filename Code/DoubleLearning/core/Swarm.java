@@ -11,20 +11,19 @@ import tool.Stopwatch;
 /**
  * @author Hongwei Hu
  * NUID 001677683
- * 
- * Stores All Particles in an ArrayList.
- * Add gBest to store the best route of the whole swarm in exploration.
- * Parallel explore for each Particle
- * 
+ *
  */
 public class Swarm {
+	
+	// test for log
+	// private static final Logger log = Logger.getLogger(Swarm.class.getName());
 	
 	public static int num = 100; // #Particles
 	public static int ePochs = 5000;
 	
-	public static double w = 0.1; // inertia
-	public static double c1 = 0.8; // learning rate c1 for cognition
-	public static double c2 = 0.05; // learning rate c2 for social
+	public static double w = 0.2; // inertia
+	public static double c1 = 0.2; // learning rate c1 for cognition
+	public static double c2 = 0.6; // learning rate c2 for social
 	
 	public Particle gBest;
 	// Particle[] swarm;
@@ -45,6 +44,7 @@ public class Swarm {
 		for (int i = 0; i < Swarm.ePochs; i++)	{
 			//System.out.println("#Exploration: " + i + "...");
 			//System.out.println();
+			// log.log(Level.INFO,"Exploration: " + i + "...");
 			explore();
 		}
 			
@@ -67,6 +67,7 @@ public class Swarm {
 		for (int i = 0; i < Swarm.ePochs; i++)	{
 			// System.out.println("#Exploration: " + i + "...");
 			// System.out.println();
+			// log.log(Level.INFO,"Exploration: " + i + "...");
 			explore();
 		}
 		
@@ -90,28 +91,32 @@ public class Swarm {
 	//
 	private void generateSwarm(Cities cities) {
 		
+		// swarm = new Particle[num];
 		swarm = new ArrayList<Particle>(num);
 		
 		// ###### Parallel Later ######
-		System.out.println("Creating Particles...");
-		System.out.println();
+		// System.out.println("Creating Particles...");
+		// System.out.println();
 		
 		// Create # Particles (Routes)
 		for (int i = 0; i < num; i++) {
+			// swarm[i] = new Particle(i, cities);
 			swarm.add(i, new Particle(i,cities));
 		}
 		
 		updateBest();
 		
-		System.out.println("Swarm Created!");
-		System.out.println();
+		// System.out.println("Swarm Created!");
+		// System.out.println();
 	}
 	
-	// Swarm starts to explore
+	// Swarm starts to iterate
 	// Particles try to move and learn from others
 	public void explore() {
 		 
 		// ###### Parallel Later ######
+		// https://docs.oracle.com/javase/tutorial/collections/streams/parallelism.html
+		
 		if (isParallel) {
 			// Parallel exploration
 			swarm.parallelStream().forEach(p -> {
@@ -150,6 +155,7 @@ public class Swarm {
 	// City order
 	// TotalDistance
 	public void displaySwarm() {
+		
 		System.out.println("Display all Routes in Paricles: ");
 		System.out.println();
 		
@@ -171,11 +177,11 @@ public class Swarm {
 		
 		// test for parallel
 		Stopwatch time = new Stopwatch();
-		Swarm swarm = new Swarm(100, cities, 5000);
-		System.out.println("Total Running Time: " + time.elapsedTime());
+		Swarm swarm = new Swarm(100, cities, 500);
+		System.out.println("Time: " + time.elapsedTime());
 		
 		// test for displaying swarm
-		swarm.displaySwarm();
+		// swarm.displaySwarm();
 		
 		// test for displaying gBest
 		swarm.displayBest();

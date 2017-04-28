@@ -5,7 +5,6 @@ package pso.basic;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Random;
 
 /**
  * @author Hongwei Hu
@@ -55,7 +54,9 @@ public class Route {
 		this.totalDistance = r.totalDistance;
 		
 		// copy route
-		for (City c : r.route) this.route.add(c);
+		// for (City c : r.route) this.route.add(c);
+		// ######
+		this.route.addAll(r.getRoute());
 		
 	}
 	
@@ -66,7 +67,7 @@ public class Route {
 		
 		for (int i = 0; i < arr.size(); i++) {
 			// routeOrder[i] = i;
-			route.add(cities.getCity(arr.get(i)));
+			route.add(Cities.getCity(arr.get(i)));
 			
 			// test for route generation
 			// System.out.println(route.get(i));
@@ -85,7 +86,7 @@ public class Route {
 		// int[] routeOrder = new int[num];
 		for (int i = 1; i < num; i++) {
 			// routeOrder[i] = i;
-			route.add(cities.getCity(i));
+			route.add(Cities.getCity(i));
 			
 			// test for route generation
 			// System.out.println(route.get(i));
@@ -170,7 +171,7 @@ public class Route {
 		}*/
 		
 		// display all cities's information
-		for (City c: cities.getAll()) {
+		for (City c: Cities.getAll()) {
 			cities.displayDistanceForCity(c.getIndex());
 		}
 		

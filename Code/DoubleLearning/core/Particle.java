@@ -12,22 +12,13 @@ import pso.basic.Route;
 /**
  * @author Hongwei Hu
  * NUID 001677683
- * 
- * Add a new attribute: pBest to store the best route of this Particle in exploration.
- * 
- * Learning Process:
- * 1. Self-adjustment: learnFromSelf(w); 
- * 2. Learn From pBest: learnFromExperience(pBest, c1);
- * 3. Learn From gBest: learnFromSocial(gBest, c2);
- * 4. if learning result is worse than (valMax * currentRoute),
- * 		give up learning result.
- * 
+ *
  */
 public class Particle extends Route {
 
 	Route pBest;
 	int valBest;
-	double valMax = 1.05; // Vmax
+	int valMax; // Vmax
 
 	/**
 	 * @param index
@@ -48,7 +39,7 @@ public class Particle extends Route {
 		
 		super(p);
 		this.pBest = new Route(p);
-		this.valBest = p.pBest.getTotalDistance();
+		this.valBest = this.pBest.getTotalDistance();
 		
 	}
 	
@@ -56,8 +47,7 @@ public class Particle extends Route {
 	public void explore(Route gBest, double w, double c1, double c2) {
 		
 		// save current Route For Converge
-		// if the learning result is bad, restore this route
-		Route savedRoute = new Route(this);
+		// Route savedRoute = new Route(this);
 		
 		// Self-adjustment
 		learnFromSelf(w);
@@ -68,9 +58,8 @@ public class Particle extends Route {
 		// Learn From gBest
 		learnFromSocial(gBest, c2);
 		
-		// if learning result is good, accept
 		// if learning result is worse, restore
-		if (this.getTotalDistance() < savedRoute.getTotalDistance()*valMax) {
+		/*if (this.getTotalDistance() <= savedRoute.getTotalDistance()*1.05) {
 			// after exploration, update pBest
 			updateBest();
 		}
@@ -78,15 +67,18 @@ public class Particle extends Route {
 			this.getRoute().clear();
 			this.getRoute().addAll(savedRoute.getRoute());
 			this.calculateRoute();
-		}
-	
-		// for test: is better than only Shuffle? Of course
+		}*/
+		
+		// after exploration, update pBest
+		updateBest();
+		
+		// for test: is better than Shuffle? Of course
 		// Collections.shuffle(this.getRoute());
 	}
 	
 	// Self-adjustment (Cognition Part 1)
 	// Inertia
-	// 1. w: keep part(w) of Route unchanged
+	// 1. w: 60%(default): keep part(w) of Route unchanged
 	// 2. find which part is better:
 	// 	  a. first half?
 	//    b. second half?
@@ -113,6 +105,7 @@ public class Particle extends Route {
 		secondHalf += this.getRoute().get(end).distanceFromCity(0);
 		// System.out.println("Second: " + secondHalf);
 
+		
 		if (firstHalf <= secondHalf) {
 			Collections.shuffle(this.getRoute().subList(start+numUnchanged, end+1));
 		}
@@ -124,9 +117,9 @@ public class Particle extends Route {
 		this.calculateRoute();
 	}
 	
-	// Learn from one's experience (Cognition Part 2)
+	// Learn from one's experience (Coginition Part 2)
 	// pBest
-	// 1. c1: pick part from pBest
+	// 1. c1: (1-w)/2: 20%(default): pick part from pBest
 	// 2. delete same elements from original route
  	// 3. insert this piece of route to original route
 	private void learnFromExperience(Route pBest, double c1) {
@@ -138,9 +131,10 @@ public class Particle extends Route {
 		if (numPicked < 1) return;
 		
 		int startIndex = (int)(Math.random()*(pBest.getRoute().size()- numPicked + 1));
+		// int startIndex = 2;
 		// System.out.println("Pick From " + startIndex);
-		
 		ArrayList<City> pickedRoute = new ArrayList<>(numPicked);
+		
 		for (int i = startIndex; i < (startIndex + numPicked); i++) {
 			pickedRoute.add(pBest.getRoute().get(i));
 			// System.out.println(pBest.getRoute().get(i));
@@ -164,7 +158,7 @@ public class Particle extends Route {
 	
 	// learn from others' experience (Social)
 	// gBest
-	// 1. c2: pick part from gBest
+	// 1. c2: (1-w)/2: 20%(default): pick part from gBest
 	// 2. delete same elements from original route
 	// 3. insert this piece of route to original route
 	private void learnFromSocial(Route gBest, double c2) {
@@ -176,22 +170,57 @@ public class Particle extends Route {
 		if (numPicked < 1) return;
 		
 		int startIndex = (int)(Math.random()*(gBest.getRoute().size()- numPicked + 1));
+		// int startIndex = 2;
 		// System.out.println("Pick From " + startIndex);
-		
 		ArrayList<City> pickedRoute = new ArrayList<>(numPicked);
+		
 		for (int i = startIndex; i < (startIndex + numPicked); i++) {
 			pickedRoute.add(gBest.getRoute().get(i));
 			// System.out.println(gBest.getRoute().get(i));
 		}
 		
+		// insert pickedRoute back into original route
+		/*for (int i = startIndex, j = 0; i<(startIndex+numPicked); i++, j++) {
+			this.getRoute().add(i, pickedRoute.get(j));
+		}*/
+		
+		// gBest could be the reverse order.
+		// try to learn from both side(A,B)
+		Route routeA = new Route(this);
+		Route routeB = new Route(this);
+		
 		// delete same elements from original route
 		for (City c: pickedRoute) {
-			if (this.getRoute().contains(c)) this.getRoute().remove(c);
+			//if (this.getRoute().contains(c)) this.getRoute().remove(c);
+			// System.out.println(c);
+			if (routeA.getRoute().contains(c)) this.getRoute().remove(c);
+			if (routeB.getRoute().contains(c)) this.getRoute().remove(c);
 		}
 		
-		// insert pickedRoute back into original route
+		// learn from A side
 		for (int i = startIndex, j = 0; i<(startIndex+numPicked); i++, j++) {
-			this.getRoute().add(i, pickedRoute.get(j));
+			routeA.getRoute().add(i, pickedRoute.get(j));
+			routeA.calculateRoute();
+		}
+		
+		// learn from B side
+		int endIndex = startIndex + numPicked - 1; 
+		startIndex = pBest.getRoute().size() - 1 - endIndex;
+		for (int i = startIndex, j = pickedRoute.size()-1; i<(startIndex + numPicked);
+				i++, j--) {
+			System.out.println(i + "-" +j);
+			routeB.getRoute().add(i, pickedRoute.get(j));
+			routeB.calculateRoute();
+		}
+		
+		// learn from the better one 
+		if (routeA.getTotalDistance() <= routeB.getTotalDistance()) {
+			this.getRoute().clear();
+			this.getRoute().addAll(routeA.getRoute());
+		}
+		else {
+			this.getRoute().clear();
+			this.getRoute().addAll(routeB.getRoute());
 		}
 				
 		// update TotalDistance for this route
@@ -221,7 +250,7 @@ public class Particle extends Route {
 	// for test
 	public static void main(String args[]) {
 		
-		Cities cities = new Cities(48, "Cities-clean.txt");
+		Cities cities = new Cities(6, "CitiesDemo.txt");
 		Particle p = new Particle(1, cities);
 		p.display();
 		
@@ -256,17 +285,10 @@ public class Particle extends Route {
 		System.out.println("Before Exploration: ");
 		System.out.println("pBest: ");
 		p.pBest.displayRoute();
-		
-		System.out.println();
-		System.out.println("Start Exploration...");
-		p.explore(gBest, 0.6, 0.5, 0.1);
-		System.out.println();
-		
-		System.out.println();
+		p.explore(gBest, 0.6, 0.4, 0.4);
 		System.out.println("After Exploration: ");
 		System.out.println("pBest: ");
 		p.pBest.displayRoute();
-		System.out.println("Current Route: ");
 		p.display();
 	}
 

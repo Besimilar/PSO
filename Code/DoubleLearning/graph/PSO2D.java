@@ -17,6 +17,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import pso.basic.Cities;
+import pso.core.PSODriver;
 import pso.core.Swarm;
 
 /**
@@ -45,11 +46,12 @@ public class PSO2D implements ActionListener {
 		frame.setSize(1200, 600);
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		// frame.addWindowListener(this);
 				
 		main = new PSOMain(); // MainFrame
 		JPanel control = new JPanel();
 		
-		// input Layer
 		JPanel input = new JPanel();
 		generateInputLayer(input);
 		
@@ -108,7 +110,7 @@ public class PSO2D implements ActionListener {
 		parallelPanel.add(parallelLabel); parallelPanel.add(isParallel);
 		
 		input.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 0));
-		
+		//input.setBackground(Color.GRAY);
 		input.add(wPanel);
 		input.add(c1Panel);
 		input.add(c2Panel);
@@ -121,7 +123,9 @@ public class PSO2D implements ActionListener {
 	public void actionPerformed(ActionEvent ae) {
 		
 		if (ae.getSource() == start) {
-		
+			/*PSODriver job = new PSODriver(48, "Cities-clean.txt", 100, 5000,
+					0.2, 0.7, 0.1);*/
+			
 			// draw Route flag
 			PSOMain.started = true;
 			// System.out.println("Button inner.");
@@ -145,8 +149,10 @@ public class PSO2D implements ActionListener {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				new PSO2D(48, "Cities-clean.txt");
+//				new PSO2D(21, "CitiesDemo-21.txt");
 			}
 		});
+		// new PSO2D(48, "Cities-clean.txt");
 		
 	}
 
