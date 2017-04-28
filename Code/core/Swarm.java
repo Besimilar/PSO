@@ -3,9 +3,6 @@
  */
 package pso.core;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import pso.basic.Cities;
 
 /**
@@ -16,13 +13,14 @@ import pso.basic.Cities;
 public class Swarm {
 	
 	// test for log
-	private static final Logger log = Logger.getLogger(Swarm.class.getName());
+	// private static final Logger log = Logger.getLogger(Swarm.class.getName());
 	
-	int num = 10; // #Particles
+	public static int num = 50; // #Particles
+	public static int ePochs = 500;
 	
-	double w = 0.6; // inertia
-	double c1 = 0.4; // learning rate c1 for cognition
-	double c2 = 0.4; // learning rate c2 for social
+	public static double w = 0.6; // inertia
+	public static double c1 = 0.4; // learning rate c1 for cognition
+	public static double c2 = 0.4; // learning rate c2 for social
 	
 	public Particle gBest;
 	Particle[] swarm; 
@@ -30,15 +28,16 @@ public class Swarm {
 	public Swarm(int num, Cities cities, int ePochs) {
 		
 		this.num = num;
+		this.ePochs = ePochs;
 		
 		// generateSwarm
 		generateSwarm(cities);
 		
 		// start to explore
 		// iterate #ePochs times
-		for (int i = 0; i < ePochs; i++)	{
-			System.out.println("#Exploration: " + i + "...");
-			System.out.println();
+		for (int i = 0; i < this.ePochs; i++)	{
+			//System.out.println("#Exploration: " + i + "...");
+			//System.out.println();
 			// log.log(Level.INFO,"Exploration: " + i + "...");
 			explore();
 		}
@@ -49,6 +48,7 @@ public class Swarm {
 			double w, double c1, double c2) {
 		
 		this.num = num;
+		this.ePochs = ePochs;
 		this.w = w;
 		this.c1 = c1;
 		this.c2 = c2;
@@ -58,13 +58,27 @@ public class Swarm {
 		
 		// start to explore
 		// iterate #ePochs times
-		for (int i = 0; i < ePochs; i++)	{
-			System.out.println("#Exploration: " + i + "...");
-			System.out.println();
+		for (int i = 0; i < this.ePochs; i++)	{
+			// System.out.println("#Exploration: " + i + "...");
+			// System.out.println();
 			// log.log(Level.INFO,"Exploration: " + i + "...");
 			explore();
 		}
 		
+	}
+	
+	public Swarm(Cities cities) {
+		
+		// generateSwarm
+		generateSwarm(cities);
+				
+		// start to explore
+		// iterate #ePochs times
+		for (int i = 0; i < this.ePochs; i++) {
+			//System.out.println("#Exploration: " + i + "...");
+			//System.out.println();
+			explore();
+		}
 		
 	}
 	
@@ -74,8 +88,8 @@ public class Swarm {
 		swarm = new Particle[num];
 		
 		// ###### Parallel Later ######
-		System.out.println("Creating Particles...");
-		System.out.println();
+		// System.out.println("Creating Particles...");
+		// System.out.println();
 		
 		// Create # Particles (Routes)
 		for (int i = 0; i < num; i++) {
@@ -84,8 +98,8 @@ public class Swarm {
 		
 		updateBest();
 		
-		System.out.println("Swarm Created!");
-		System.out.println();
+		// System.out.println("Swarm Created!");
+		// System.out.println();
 	}
 	
 	// Swarm starts to iterate

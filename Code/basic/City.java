@@ -24,6 +24,15 @@ public class City {
 	// double latitude; // also Y axis: Lat: 42.23
 	private int longitude; // for storage and computing efficiency
 	private int latitude;  // set both Long & Lat to int
+	
+	// Coordinated are used in drawing map
+	private double x; // x coordinate
+	private double y; // y coordinate
+	
+	public void setX(double x) {this.x = x;}
+	public void setY(double y) {this.y = y;}
+	public double getX() {return x;}
+	public double getY() {return y;}
 		
 	// distances between any city and this city
 	// index - distances

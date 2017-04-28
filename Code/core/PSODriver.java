@@ -26,6 +26,16 @@ public class PSODriver {
 		
 	}
 	
+	public PSODriver(int num, String fileName) {
+		
+		// load cities
+		Cities cities = new Cities(num, fileName);
+		
+		// use default parameters
+		swarm = new Swarm(cities);
+		
+	}
+	
 	private void run() {
 	
 		// test for displaying swarm
@@ -47,8 +57,13 @@ public class PSODriver {
 		/*PSODriver job = new PSODriver(10, "CitiesDemo-10.txt", 50, 100,
 				0.1, 0.3, 0.3);*/
 		
-		PSODriver job = new PSODriver(50, "Cities.txt", 50, 1000,
-				0.1, 0.3, 0.45);
+		PSODriver job = new PSODriver(48, "Cities-clean.txt", 100, 5000,
+				0.1, 0.7, 0.1);
+		// 0.2 - 0,3 - 0.5
+		// 0.5, 0.7, 0.1
+		// 0.5, 0.8, 0.1
+		// 0.2, 0.7, 0.1
+		// 0.2, 0.7, 0.1
 		
 		job.run();
 	}

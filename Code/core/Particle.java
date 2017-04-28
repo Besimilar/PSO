@@ -59,6 +59,9 @@ public class Particle extends Route {
 		
 		// after exploration, update pBest
 		updateBest();
+		
+		// for test: is better than Shuffle? Of course
+		// Collections.shuffle(this.getRoute());
 	}
 	
 	// Self-adjustment (Cognition Part 1)

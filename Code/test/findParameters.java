@@ -3,7 +3,9 @@
  */
 package pso.test;
 
+import pso.basic.Cities;
 import pso.core.PSODriver;
+import pso.core.Swarm;
 
 /**
  * @author Hongwei Hu
@@ -19,6 +21,8 @@ public class findParameters {
 		
 		int bestDistance = Integer.MAX_VALUE;
 		double[] params = new double[3];
+		Cities cities = new Cities(50, "Cities.txt");
+		int count = 0;
 		
 		for (int i = 1; i<10; i++) {
 			
@@ -28,10 +32,12 @@ public class findParameters {
 					
 					int distance = 0;			
 					for (int n = 0; n<10; n++) {
-						PSODriver job = new PSODriver(50, "Cities.txt", 50, 1000,
+						Swarm swarm = new Swarm(50, cities, 1000,
 								i*0.1, j*0.1, k*0.1);
-						distance += job.swarm.gBest.getTotalDistance();
+						distance += swarm.gBest.getTotalDistance();
 					}
+					count++;
+					System.out.println(count);
 					distance = distance / 10;
 					if (bestDistance > distance) {
 						bestDistance = distance;

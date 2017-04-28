@@ -18,19 +18,25 @@ import java.io.InputStreamReader;
  */
 public class Cities {
 
-	private int num = 50; // 50 states
-	private String fileName = "Cities.txt";
+	public static int num = 50; // 50 states
+	public static String fileName = "Cities.txt";
 	
 	// Array<City> to store indexes - cities
 	// private ArrayList<City> cities = new ArrayList<>(); 
-	private City[] cities;
+	private static City[] cities;
 	
-	public City getCity(int cityIndex) {
+	public static City getCity(int cityIndex) {
 		return cities[cityIndex]; 
 	}
-	public City[] getAll () {
+	public static City[] getAll () {
 		return cities;
 	}
+	
+	// Coordinated are used in Drawing Map
+	int east = Integer.MIN_VALUE;
+	int west = Integer.MAX_VALUE;
+	int north = Integer.MIN_VALUE;
+	int south = Integer.MAX_VALUE;
 	
 	// Constructor for Cities: read all data from "cities.txt"
 	public Cities(int num, String fileName) {
@@ -39,6 +45,7 @@ public class Cities {
 		cities = new City[num];
 		
 		readData();
+		updataCoordinates();
 		calculate(); // calculate distances and store them
 	}
 	
@@ -62,6 +69,12 @@ public class Cities {
 				int latitude = (int) Double.parseDouble(cityInfo[2]);
 				int longitude = (int) Double.parseDouble(cityInfo[3]);
 				
+				// save Ranges for Coordinates
+				if (longitude < west) west = longitude;
+				if (longitude > east) east = longitude;
+				if (latitude > north) north = latitude;
+				if (latitude < south) south = latitude;
+				
 				// store cities into cities 
 				cities[i] = new City(i, city, state, latitude, longitude);
 			}
@@ -78,6 +91,24 @@ public class Cities {
 		}
 		
 	}
+	
+	/**
+	 *  Calculate Coordinated based on loading data
+	 *  it's used in Drawing map
+	 */
+	private void updataCoordinates() {
+		// TODO Auto-generated method stub
+		
+		for (City c : cities) {
+			double xLocation = c.getLongitude() - west + 1;
+			double yLocation = north - c.getLatitude() + 1;
+			
+			c.setX(xLocation/(east-west + 5));
+			c.setY(yLocation/(north-south + 2));
+		}
+		
+	}
+	
 	
 	// ****** Calculate distances between any two cities(states)
 	// for simplifying calculation: use Longitude & latitude of cities as 
@@ -132,7 +163,7 @@ public class Cities {
 	public static void main(String args[]) {
 	
 		// System.out.println(Cities.getCity(20));
-		Cities cities = new Cities(6, "CitiesDemo.txt");
+		Cities cities = new Cities(48, "Cities-clean.txt");
 		// System.out.println(Cities.getCity(20));
 		
 		// test for City print
@@ -152,8 +183,15 @@ public class Cities {
 					+ cities.cities[i] + ": " + cities.cities[20].distances[i] );
 		}*/
 		
-		cities.displayDistanceForCity(0);;
-		System.out.println(cities.getCity(0).getDistances().size());
+		// cities.displayDistanceForCity(0);;
+		// System.out.println(cities.getCity(0).getDistances().size());
+		
+		// test for Coordinates Calculation
+		cities.displayCities();
+		System.out.println("East: " + cities.east);
+		System.out.println("West: " + cities.west);
+		System.out.println("North: " + cities.north);
+		System.out.println("South: " + cities.south);
 		
 	}
 	
