@@ -12,6 +12,7 @@ import pso.basic.Cities;
 import pso.basic.City;
 import pso.core.PSODriver;
 import pso.core.Swarm;
+import tool.Stopwatch;
 
 /**
  * @author Hongwei Hu
@@ -55,7 +56,9 @@ public class PSOMain extends JPanel {
 			
 			//PSODriver job = new PSODriver(48, "Cities-clean.txt", 100, 5000,
 			//		0.2, 0.7, 0.1);
+			Stopwatch watch = new Stopwatch();
 			PSODriver job = new PSODriver(Cities.num, Cities.fileName);
+			double time = watch.elapsedTime();
 			
 			int total = job.swarm.gBest.getRoute().size();
 			
@@ -95,7 +98,12 @@ public class PSOMain extends JPanel {
 			String numParticles = "#Particles: " + Swarm.num;
 			g.drawString(numParticles, size.width/2, 60);
 			
+			// draw running time
+			String rTime = "Running Time: " + time + "(" 
+					+ Swarm.isParallel + ")";
+			g.drawString(rTime, size.width*3/4, 30);
 			
+			//System.out.println(Swarm.isParallel);
 		}
 		
 	}

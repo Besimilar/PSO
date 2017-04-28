@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -34,6 +35,7 @@ public class PSO2D implements ActionListener {
 	JTextField c2;
 	JTextField ePochs;
 	JTextField numParticles;
+	JComboBox<Boolean> isParallel;
 	
 	public PSO2D(int num, String fileName) {
 		
@@ -75,7 +77,7 @@ public class PSO2D implements ActionListener {
 		
 		// input layer
 		JPanel wPanel = new JPanel();
-		w = new JTextField("0.2", 5);
+		w = new JTextField("0.6", 5);
 		JLabel wLabel = new JLabel("w: ");
 		wPanel.add(wLabel); wPanel.add(w);
 				
@@ -98,14 +100,23 @@ public class PSO2D implements ActionListener {
 		iterPanel.add(iterLabel); iterPanel.add(ePochs);
 		pPanel.add(pLabel); pPanel.add(numParticles);
 		
-				
+		// Parallel choice
+		JPanel parallelPanel = new JPanel();
+		JLabel parallelLabel = new JLabel("isParallel: ");
+		Boolean[] choice = {true, false};
+		isParallel = new JComboBox<>(choice);
+		isParallel.setSelectedIndex(0);
+		isParallel.addActionListener(ae -> { Swarm.isParallel = choice[isParallel.getSelectedIndex()]; });
+		parallelPanel.add(parallelLabel); parallelPanel.add(isParallel);
+		
 		input.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 0));
 		//input.setBackground(Color.GRAY);
 		input.add(wPanel);
 		input.add(c1Panel);
 		input.add(c2Panel);
-		input.add(iterPanel);
 		input.add(pPanel);
+		input.add(iterPanel);
+		input.add(parallelPanel);
 	}
 	
 	@Override
@@ -140,7 +151,7 @@ public class PSO2D implements ActionListener {
 				new PSO2D(48, "Cities-clean.txt");
 			}
 		});
-		// new PSO2D();
+		// new PSO2D(48, "Cities-clean.txt");
 		
 	}
 

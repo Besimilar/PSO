@@ -91,9 +91,8 @@ public class Particle extends Route {
 		int secondHalf = this.distanceBetween(end-numUnchanged+1, end);
 		secondHalf += this.getRoute().get(end).distanceFromCity(0);
 		// System.out.println("Second: " + secondHalf);
+
 		
-		// ****** whether to apply this to 
-		// learnFromExperience and learnFromSocial ???
 		if (firstHalf <= secondHalf) {
 			Collections.shuffle(this.getRoute().subList(start+numUnchanged, end+1));
 		}

@@ -107,6 +107,7 @@ public class Cities {
 			c.setY(yLocation/(north-south + 2));
 		}
 		
+		
 	}
 	
 	

@@ -3,7 +3,10 @@
  */
 package pso.core;
 
+import java.util.ArrayList;
+
 import pso.basic.Cities;
+import tool.Stopwatch;
 
 /**
  * @author Hongwei Hu
@@ -23,7 +26,10 @@ public class Swarm {
 	public static double c2 = 0.4; // learning rate c2 for social
 	
 	public Particle gBest;
-	Particle[] swarm; 
+	// Particle[] swarm;
+	ArrayList<Particle> swarm; // for parallel
+	
+	public static boolean isParallel = true; 
 	
 	public Swarm(int num, Cities cities, int ePochs) {
 		
@@ -85,7 +91,8 @@ public class Swarm {
 	//
 	private void generateSwarm(Cities cities) {
 		
-		swarm = new Particle[num];
+		// swarm = new Particle[num];
+		swarm = new ArrayList<Particle>(num);
 		
 		// ###### Parallel Later ######
 		// System.out.println("Creating Particles...");
@@ -93,7 +100,8 @@ public class Swarm {
 		
 		// Create # Particles (Routes)
 		for (int i = 0; i < num; i++) {
-			swarm[i] = new Particle(i, cities);
+			// swarm[i] = new Particle(i, cities);
+			swarm.add(i, new Particle(i,cities));
 		}
 		
 		updateBest();
@@ -107,10 +115,22 @@ public class Swarm {
 	public void explore() {
 		 
 		// ###### Parallel Later ######
-		for (Particle p : swarm) {
-
-			// learn from pBest and gBest
-			p.explore(gBest, w, c1, c2);
+		// https://docs.oracle.com/javase/tutorial/collections/streams/parallelism.html
+		
+		if (isParallel) {
+			// Parallel exploration
+			swarm.parallelStream().forEach(p -> {
+				p.explore(gBest, w, c1, c2);
+			});
+		
+			//System.out.println("Parallel...");
+		}
+		else {
+			for (Particle p : swarm) {
+				// learn from pBest and gBest
+				p.explore(gBest, w, c1, c2);
+			}
+			//System.out.println("Not Parallel...");
 		}
 		
 		// after iteation update gBest
@@ -126,6 +146,7 @@ public class Swarm {
 				gBest = new Particle(p);
 			}
 		}
+		
 	}
 	
 	// Display the whole swarm (all Routes)
@@ -152,11 +173,15 @@ public class Swarm {
 	
 	public static void main(String args[]) {
 		
-		Cities cities = new Cities(6, "CitiesDemo.txt");
-		Swarm swarm = new Swarm(10, cities, 10);
+		Cities cities = new Cities(48, "Cities-clean.txt");
+		
+		// test for parallel
+		Stopwatch time = new Stopwatch();
+		Swarm swarm = new Swarm(100, cities, 5000);
+		System.out.println("Time: " + time.elapsedTime());
 		
 		// test for displaying swarm
-		swarm.displaySwarm();
+		// swarm.displaySwarm();
 		
 		// test for displaying gBest
 		swarm.displayBest();
